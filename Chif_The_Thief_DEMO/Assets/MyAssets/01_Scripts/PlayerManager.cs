@@ -3,12 +3,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-
+    
     [SerializeField] float speed;
+
     Vector3 moveXYZ;
 
-    
-
+    InputActions inputActions;
 
     void Start()
     {
@@ -18,43 +18,30 @@ public class PlayerManager : MonoBehaviour
     
     void Update()
     {
-        
+        MovePlayer();
     }
 
-
-    private InputAction inputActions; // Fíjate que es "InputAction" sin la "s" al final y sin espacios
-
-    private void Awake()
+    void Awake()
     {
-        // Instancia la clase con el nombre exacto de tu archivo
-        inputActions = new InputAction();
+        inputActions = new InputActions();
 
-        // MOVIMIENTO
         inputActions.Player.Move.performed += ctx => moveXYZ = ctx.ReadValue<Vector3>();
-        inputActions.Player.Move.canceled += ctx => moveXYZ = Vector3.zero;
+        inputActions.Player.Move.canceled += _ => moveXYZ = Vector3.zero;
     }
-
 
     void MovePlayer()
-    { 
-    
-       Vector3 displacement = new Vector3 (moveXYZ.x, moveXYZ.y, moveXYZ.z) * speed * Time.deltaTime;
-       Vector3 newPosition = transform.position + displacement;
-
+    {
+        Vector3 displacement = new Vector3(moveXYZ.x, 0f, moveXYZ.z) * speed * Time.deltaTime;
+        Vector3 newPosition = transform.position += displacement;
     }
-
-
-
-
 
     private void OnEnable()
     {
-        inputActions.Enable();
+        inputActions.Player.Enable();
     }
 
     private void OnDisable()
     {
-        inputActions.Disable();
+        inputActions.Player.Disable();
     }
-
 }
