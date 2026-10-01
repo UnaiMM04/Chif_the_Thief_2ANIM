@@ -31,8 +31,9 @@ public class PlayerManager : MonoBehaviour
 
     void MovePlayer()
     {
-        Vector3 displacement = new Vector3(moveXYZ.x, 0f, moveXYZ.z) * speed * Time.deltaTime;
-        Vector3 newPosition = transform.position += displacement;
+        Vector3 displacement = new Vector3(-moveXYZ.x, 0f, moveXYZ.z) * speed * Time.deltaTime;
+        //Vector3 newPosition = transform.position += displacement;
+        transform.Translate(displacement);
     }
 
     private void OnEnable()
