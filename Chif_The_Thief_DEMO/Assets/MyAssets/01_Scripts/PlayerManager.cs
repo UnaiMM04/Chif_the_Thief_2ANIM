@@ -5,8 +5,8 @@ public class PlayerManager : MonoBehaviour
 {
     
     [SerializeField] float speed;
-    [SerializeField] public float rotationSpeed = 100f; // Sube un poco este valor si va muy lento con el mando
-    [SerializeField] Transform playerCamera;   // Arrastra aquí la cámara hija desde el inspector
+    [SerializeField] public float rotationSpeed = 100f; //SENSIVILIDAD DEL MANDO PARA ROTAR EL JUGADOR
+    [SerializeField] Transform playerCamera;   //PARA CONTROLAR LA CAMARA
 
     Vector3 moveXYZ;
     Vector2 rotateXY;
@@ -17,7 +17,9 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        
+        //VISIVILIDAD Y BLOQUEO DEL CURSOR
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     
@@ -31,12 +33,13 @@ public class PlayerManager : MonoBehaviour
     {
         inputActions = new InputActions();
 
+        
+
+        //MOVIMIENTO DEL JUGADOR
         inputActions.Player.PlayerMove.performed += ctx => moveXYZ = ctx.ReadValue<Vector3>();
         inputActions.Player.PlayerMove.canceled += _ => moveXYZ = Vector3.zero;
 
-        //inputActions.Player.PlayerRotate.performed += ctx => moveXYZ = ctx.ReadValue<Vector2>();
-        //inputActions.Player.PlayerRotate.canceled += _ => moveXYZ = Vector2.zero;
-
+        //ROTACIÓN DEL JUGADOR
         inputActions.Player.PlayerRotate.performed += ctx => rotateXY = ctx.ReadValue<Vector2>();
         inputActions.Player.PlayerRotate.canceled += _ => rotateXY = Vector2.zero;
     }
@@ -51,21 +54,19 @@ public class PlayerManager : MonoBehaviour
 
     void RotatePlayer()
     {
-        //Vector2 rotation = new Vector2(rotateXY.x, rotateXY.y) * rotationSpeed * Time.deltaTime;
-        //transform.Rotate(rotation);
+        
 
-        // 1. ROTACIÓN HORIZONTAL (Izquierda / Derecha) -> Rota la cápsula entera
+        // 1. ROTACIÓN HORIZONTAL 
         float horizontalRotation = rotateXY.x * rotationSpeed * Time.deltaTime;
         transform.Rotate(Vector3.up, horizontalRotation, Space.World);
 
-
-        // 2. ROTACIÓN VERTICAL (Arriba / Abajo) -> Rota solo la cámara y limitamos el ángulo
+        // 2. ROTACIÓN VERTICAL SOLO DE LA CÁMARA 
         if (playerCamera != null)
         {
             float verticalRotation = rotateXY.y * rotationSpeed * Time.deltaTime;
 
-            xRotation -= verticalRotation; // Restamos para que el eje Y del mando sea natural
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Evita que la cámara dé la vuelta completa
+            xRotation -= verticalRotation; 
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f); // LIMITES CAMARA ARRIBA Y ABAJO
 
             playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         }
