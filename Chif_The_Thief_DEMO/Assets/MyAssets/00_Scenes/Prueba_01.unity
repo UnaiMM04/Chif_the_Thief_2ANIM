@@ -165,6 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
   speed: 5
+  rotationSpeed: 100
+  playerCamera: {fileID: 890543341}
 --- !u!1 &441064897
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +324,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
   speed: 0
+  rotationSpeed: 2
+  playerCamera: {fileID: 0}
 --- !u!1 &610976369
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraManager
   playerTransform: {fileID: 53795676}
+  playerRotate: {fileID: 53795676}
   distance: 0
   verticalOffset: 0
 --- !u!1 &2064170584
