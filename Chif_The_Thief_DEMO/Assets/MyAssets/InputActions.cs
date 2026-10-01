@@ -109,6 +109,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Salto"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7f0f21e-a2b9-4594-a8f2-850e61534db1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +241,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PlayerRotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""789d8073-efaf-48ab-8014-097daa5f0707"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Salto"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -242,6 +262,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_PlayerMove = m_Player.FindAction("PlayerMove", throwIfNotFound: true);
         m_Player_PlayerRotate = m_Player.FindAction("PlayerRotate", throwIfNotFound: true);
+        m_Player_Salto = m_Player.FindAction("Salto", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -324,6 +345,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_PlayerMove;
     private readonly InputAction m_Player_PlayerRotate;
+    private readonly InputAction m_Player_Salto;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -343,6 +365,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/PlayerRotate".
         /// </summary>
         public InputAction @PlayerRotate => m_Wrapper.m_Player_PlayerRotate;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Salto".
+        /// </summary>
+        public InputAction @Salto => m_Wrapper.m_Player_Salto;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -375,6 +401,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PlayerRotate.started += instance.OnPlayerRotate;
             @PlayerRotate.performed += instance.OnPlayerRotate;
             @PlayerRotate.canceled += instance.OnPlayerRotate;
+            @Salto.started += instance.OnSalto;
+            @Salto.performed += instance.OnSalto;
+            @Salto.canceled += instance.OnSalto;
         }
 
         /// <summary>
@@ -392,6 +421,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PlayerRotate.started -= instance.OnPlayerRotate;
             @PlayerRotate.performed -= instance.OnPlayerRotate;
             @PlayerRotate.canceled -= instance.OnPlayerRotate;
+            @Salto.started -= instance.OnSalto;
+            @Salto.performed -= instance.OnSalto;
+            @Salto.canceled -= instance.OnSalto;
         }
 
         /// <summary>
@@ -446,5 +478,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlayerRotate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Salto" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSalto(InputAction.CallbackContext context);
     }
 }
