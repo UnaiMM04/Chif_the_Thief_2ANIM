@@ -1,29 +1,38 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    
+    //VELOCIDADES
     [SerializeField] float speed;
-    [Range(50f, 100f)] [SerializeField] public float rotationSpeed = 75f; //SENSIVILIDAD DEL MANDO PARA ROTAR EL JUGADOR
-    [SerializeField] Transform playerCamera;   //PARA CONTROLAR LA CAMARA
 
+    //SENSIBILIDAD DEL MANDO PARA ROTAR EL JUGADOR
+    [Range(50f, 100f)] [SerializeField] public float rotationSpeed = 75f; //RANGO DE SENSIBILIDAD DEL MANDO PARA ROTAR EL JUGADOR Y SENS INICIAL DE 75
+    
+    //CAMARA
+    [SerializeField] Transform playerCamera; //PARA CONTROLAR LA CAMARA
+
+    //MOVIMIENTO
     Vector3 moveXYZ;
+   
+    //ROTACION
     Vector2 rotateXY;
-
     float xRotation = 0f; // Para acumular y limitar la rotación vertical de la cámara
 
+    //SALTO Y GRAVEDAD
     [SerializeField] float jumpForce = 5f;       // Fuerza del salto
     [SerializeField] float gravity = -9.81f;     // Gravedad personalizada
     private float verticalVelocity;              // Velocidad vertical actual
+        //CHARACTER CONTROLLER
+        private CharacterController characterController; // Recomendado para manejar físicas y suelo
 
-    private CharacterController characterController; // Recomendado para manejar físicas y suelo
-
+    //INPUTS
     InputActions inputActions;
 
     void Start()
     {
-        //VISIVILIDAD Y BLOQUEO DEL CURSOR
+        //VISIBILIDAD Y BLOQUEO DEL CURSOR
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -51,16 +60,17 @@ public class PlayerManager : MonoBehaviour
 
         inputActions.Player.Salto.performed += _ => Jump();
     }
+
     void MovePlayer()
     {
-        // Movimiento horizontal relativo a la orientación del jugador
+        // 1. Movimiento horizontal basado en la velocidad base
         Vector3 move = transform.right * moveXYZ.x + transform.forward * moveXYZ.z;
         Vector3 displacement = move * speed;
 
         // 2. Gestión de la gravedad
         if (characterController != null && characterController.isGrounded)
         {
-            // Si está en el suelo, mantenemos una pequeña fuerza negativa para que se pegue bien
+            // Si está en el suelo, mantenemos una pequeña fuerza negativa constante para que no flote en pendientes
             if (verticalVelocity < 0.0f)
             {
                 verticalVelocity = -2f;
@@ -68,14 +78,14 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            // Si está en el aire, aplicamos gravedad con el tiempo
+            // Si está en el aire, acumulamos la gravedad correctamente con el tiempo
             verticalVelocity += gravity * Time.deltaTime;
         }
 
-        // Añadimos la velocidad vertical al desplazamiento
+        // 3. Unimos el desplazamiento horizontal con la velocidad vertical actual
         displacement.y = verticalVelocity;
 
-        // 3. Aplicar movimiento (usamos CharacterController si existe, o Translate como tenías)
+        // 4. Aplicamos el movimiento multiplicando por Time.deltaTime UNA SOLA VEZ
         if (characterController != null)
         {
             characterController.Move(displacement * Time.deltaTime);
@@ -124,3 +134,8 @@ public class PlayerManager : MonoBehaviour
         inputActions.Player.Disable();
     }
 }
+
+
+
+
+
