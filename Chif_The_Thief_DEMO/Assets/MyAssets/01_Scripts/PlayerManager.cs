@@ -27,12 +27,9 @@ public class PlayerManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // Obtenemos o añadimos automáticamente el CharacterController
+        //ESTO ES PARA QUE EL FUNCIONEN BIEN LAS FISICAS DEL JUGADOR, COMO EL SALTO Y LA GRAVEDAD
         characterController = GetComponent<CharacterController>();
-        if (characterController == null)
-        {
-            Debug.LogWarning("Se recomienda añadir un componente CharacterController al Player para que funcionen las colisiones y el suelo.");
-        }
+        
 
 
     }
