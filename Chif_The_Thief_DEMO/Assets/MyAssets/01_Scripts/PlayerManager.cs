@@ -5,7 +5,7 @@ public class PlayerManager : MonoBehaviour
 {
     
     [SerializeField] float speed;
-    [SerializeField] public float rotationSpeed = 100f; //SENSIVILIDAD DEL MANDO PARA ROTAR EL JUGADOR
+    [Range(50f, 100f)] [SerializeField] public float rotationSpeed = 75f; //SENSIVILIDAD DEL MANDO PARA ROTAR EL JUGADOR
     [SerializeField] Transform playerCamera;   //PARA CONTROLAR LA CAMARA
 
     Vector3 moveXYZ;
@@ -29,12 +29,8 @@ public class PlayerManager : MonoBehaviour
 
         //ESTO ES PARA QUE EL FUNCIONEN BIEN LAS FISICAS DEL JUGADOR, COMO EL SALTO Y LA GRAVEDAD
         characterController = GetComponent<CharacterController>();
-        
-
-
     }
 
-    
     void Update()
     {
         MovePlayer();
@@ -44,8 +40,6 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         inputActions = new InputActions();
-
-        
 
         //MOVIMIENTO DEL JUGADOR
         inputActions.Player.PlayerMove.performed += ctx => moveXYZ = ctx.ReadValue<Vector3>();
@@ -57,7 +51,6 @@ public class PlayerManager : MonoBehaviour
 
         inputActions.Player.Salto.performed += _ => Jump();
     }
-
     void MovePlayer()
     {
         // Movimiento horizontal relativo a la orientación del jugador
@@ -91,13 +84,10 @@ public class PlayerManager : MonoBehaviour
         {
             transform.Translate(displacement * Time.deltaTime, Space.World);
         }
-
     }
 
     void RotatePlayer()
     {
-        
-
         // 1. ROTACIÓN HORIZONTAL 
         float horizontalRotation = rotateXY.x * rotationSpeed * Time.deltaTime;
         transform.Rotate(Vector3.up, horizontalRotation, Space.World);
@@ -112,8 +102,6 @@ public class PlayerManager : MonoBehaviour
 
             playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         }
-
-
     }
 
     void Jump()
